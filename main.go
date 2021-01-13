@@ -44,6 +44,12 @@ func main() {
 	}
 	defer p.tex.Destroy()
 
+	be, err := newBasicEnemy(renderer)
+	if err != nil {
+		fmt.Println("creating basic enemy: ", err)
+	}
+	defer be.tex.Destroy()
+
 	for {
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch event.(type) {
@@ -53,6 +59,8 @@ func main() {
 		}
 		renderer.SetDrawColor(255, 255, 255, 255)
 		renderer.Clear()
+
+		be.draw(renderer)
 
 		p.draw(renderer)
 		p.update()

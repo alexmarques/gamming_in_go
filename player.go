@@ -12,7 +12,7 @@ type player struct {
 }
 
 const (
-	playerSpeed = 0.5
+	playerSpeed = 0.2
 	playerSize  = 105
 )
 
@@ -26,8 +26,8 @@ func newPlayer(renderer *sdl.Renderer) (p player, err error) {
 	if err != nil {
 		return player{}, fmt.Errorf("loading texture from image: %v", err)
 	}
-	p.x = screenWidth / 2.0
-	p.y = screenHeight / 2.0
+	p.x = screenWidth/2.0 - playerSize/2
+	p.y = screenHeight - playerSize
 
 	return p, nil
 }
@@ -44,5 +44,9 @@ func (p *player) update() {
 		p.x -= playerSpeed
 	} else if keys[sdl.SCANCODE_RIGHT] == 1 {
 		p.x += playerSpeed
+	} else if keys[sdl.SCANCODE_DOWN] == 1 {
+		p.y += playerSpeed
+	} else if keys[sdl.SCANCODE_UP] == 1 {
+		p.y -= playerSpeed
 	}
 }
