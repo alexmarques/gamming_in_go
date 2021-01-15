@@ -11,6 +11,19 @@ const (
 	screenHeight = 700
 )
 
+func loadTextFromBMP(renderer *sdl.Renderer, filename string) *sdl.Texture {
+	img, err := sdl.LoadBMP(filename)
+	if err != nil {
+		panic(fmt.Errorf("loading text from %v, %v", filename, err))
+	}
+	defer img.Free()
+	tex, err := renderer.CreateTextureFromSurface(img)
+	if err != nil {
+		panic(fmt.Errorf("load text from image: %v, %v", filename, err))
+	}
+	return tex
+}
+
 func main() {
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
 		fmt.Println("Initializing SDL: ", err)
@@ -38,16 +51,10 @@ func main() {
 
 	defer renderer.Destroy()
 
-	p, err := newPlayer(renderer)
-	if err != nil {
-		fmt.Println("creating player: ", err)
-	}
+	p := newPlayer(renderer)
 	defer p.tex.Destroy()
 
-	be, err := newBasicEnemy(renderer)
-	if err != nil {
-		fmt.Println("creating basic enemy: ", err)
-	}
+	be := newBasicEnemy(renderer)
 	defer be.tex.Destroy()
 
 	for {
