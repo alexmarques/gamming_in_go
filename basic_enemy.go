@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -15,19 +13,11 @@ const (
 	basicEnemySize = 105
 )
 
-func newBasicEnemy(renderer *sdl.Renderer) (be basicEnemy, err error) {
-	img, err := sdl.LoadBMP("sprites/basic_enemy.bmp")
-	if err != nil {
-		return basicEnemy{}, fmt.Errorf("loading basic enemy sprite: %v", err)
-	}
-	defer img.Free()
-	be.tex, err = renderer.CreateTextureFromSurface(img)
-	if err != nil {
-		return basicEnemy{}, fmt.Errorf("loading texture from image: %v", err)
-	}
+func newBasicEnemy(renderer *sdl.Renderer) (be basicEnemy) {
+	be.tex = loadTextFromBMP(renderer, "sprites/basic_enemy.bmp")
 	be.x = screenWidth/2.0 - basicEnemySize/2
 	be.y = screenHeight/2.0 - basicEnemySize/2
-	return be, nil
+	return be
 }
 
 func (be *basicEnemy) draw(renderer *sdl.Renderer) {

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -16,20 +14,11 @@ const (
 	playerSize  = 105
 )
 
-func newPlayer(renderer *sdl.Renderer) (p player, err error) {
-	img, err := sdl.LoadBMP("sprites/player.bmp")
-	if err != nil {
-		return player{}, fmt.Errorf("loading player sprite: %v", err)
-	}
-	defer img.Free()
-	p.tex, err = renderer.CreateTextureFromSurface(img)
-	if err != nil {
-		return player{}, fmt.Errorf("loading texture from image: %v", err)
-	}
+func newPlayer(renderer *sdl.Renderer) (p player) {
+	p.tex = loadTextFromBMP(renderer, "sprites/player.bmp")
 	p.x = screenWidth/2.0 - playerSize/2
 	p.y = screenHeight - playerSize
-
-	return p, nil
+	return p
 }
 
 func (p *player) draw(renderer *sdl.Renderer) {
